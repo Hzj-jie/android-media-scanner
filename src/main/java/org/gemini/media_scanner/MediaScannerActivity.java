@@ -34,7 +34,6 @@ public final class MediaScannerActivity
     @Override
     public void onMediaScannerConnected()
     {
-        onGoing.set(paths.length);
         for (int i = 0; i < paths.length; i++)
             scanRootFolder(
                     Environment.getExternalStoragePublicDirectory(paths[i]));
