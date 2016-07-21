@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="org.gemini.media_scanner"
+    android:versionCode="1"
+    android:versionName="1.0">
+
+    <uses-sdk android:minSdkVersion="8" />
+    <!-- uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" / -->
+    <application android:icon="@drawable/blank">
+        <activity android:name=".MediaScannerActivity"
+            android:theme="@android:style/Theme.NoDisplay"
+            android:label="Scan Media"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter>
+                <action android:name=".MediaScannerActivity" />
+                <action android:name="android.intent.action.MAIN" /> 
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+    </application>
+</manifest>
