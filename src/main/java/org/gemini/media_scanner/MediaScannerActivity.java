@@ -9,11 +9,10 @@ import android.os.Process;
 import android.util.Log;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.concurrent.atomic.AtomicInteger;
 
-public final class MediaScannerActivity
-        extends Activity
-        implements MediaScannerConnection.MediaScannerConnectionClient
+public final class MediaScannerActivity extends Activity
 {
     private static final String paths[] = {
             Environment.DIRECTORY_DCIM,
@@ -21,47 +20,45 @@ public final class MediaScannerActivity
             Environment.DIRECTORY_PICTURES
     };
     private final AtomicInteger onGoing = new AtomicInteger();
-    private MediaScannerConnection connection;
 
     @Override
     protected void onCreate(Bundle bundle)
     {
         super.onCreate(bundle);
-        connection = new MediaScannerConnection(this, this);
-        connection.connect();
-    }
-
-    @Override
-    public void onMediaScannerConnected()
-    {
+        ArrayList<String> list = new ArrayList<>();
         for (int i = 0; i < paths.length; i++)
-            scanRootFolder(
-                    Environment.getExternalStoragePublicDirectory(paths[i]));
-    }
-
-    @Override
-    public void onScanCompleted(String path, Uri uri)
-    {
-        if (onGoing.decrementAndGet() == 0)
         {
-            connection.disconnect();
-            finish();
-            Process.killProcess(Process.myPid());
-            System.exit(0);
+            scanRootFolder(
+                    Environment.getExternalStoragePublicDirectory(paths[i]),
+                    list);
         }
+        MediaScannerConnection.scanFile(
+                this, list.toArray(new String[0]), null,
+                new MediaScannerConnection.OnScanCompletedListener() {
+                    @Override
+                    public void onScanCompleted(String path, Uri uri)
+                    {
+                        if (onGoing.decrementAndGet() == 0)
+                        {
+                            finish();
+                            Process.killProcess(Process.myPid());
+                            System.exit(0);
+                        }
+                    }
+                });
     }
 
-    private void scanRootFolder(File p)
+    private void scanRootFolder(File p, ArrayList<String> list)
     {
         if (p.isFile())
         {
             onGoing.incrementAndGet();
-            connection.scanFile(p.getAbsolutePath(), null);
+            list.add(p.getAbsolutePath());
         }
         else if (p.isDirectory())
         {
             for (File s : p.listFiles())
-                scanRootFolder(s);
+                scanRootFolder(s, list);
         }
     }
 }
