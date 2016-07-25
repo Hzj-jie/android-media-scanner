@@ -1,0 +1,25 @@
+E/MediaScannerActivity(22632): Found file /storage/sdcard1/DCIM/Camera/IMG_20160427_215420.jpg
+E/MediaScannerActivity(22632): Found file /storage/sdcard1/DCIM/Camera/VID_20160419_143144.mp4
+E/MediaScannerActivity(22632): Found file /storage/sdcard1/DCIM/Camera/IMG_20160427_215426.jpg
+E/MediaScannerActivity(22632): Found file /storage/sdcard1/DCIM/Camera/IMG_20160427_215435.jpg
+E/MediaScannerActivity(22632): Found file /storage/sdcard1/DCIM/Camera/IMG_20160427_215439.jpg
+E/MediaScannerActivity(22632): Found file /storage/sdcard1/DCIM/Camera/IMG_20160503_105904.jpg
+E/MediaScannerActivity(22632): Found file /storage/sdcard1/DCIM/Camera/IMG_20160503_105920.jpg
+E/MediaScannerActivity(22632): Found file /storage/sdcard1/DCIM/Camera/IMG_20160506_212632.jpg
+E/MediaScannerActivity(22632): Found file /storage/sdcard1/DCIM/Camera/IMG_20160507_143236.jpg
+E/MediaScannerActivity(22632): Found file /storage/sdcard1/DCIM/Camera/IMG_20160507_143239.jpg
+E/MediaScannerActivity(22632): Found file /storage/sdcard1/DCIM/Camera/IMG_20160507_150442.jpg
+E/MediaScannerActivity(22632): Found file /storage/sdcard1/DCIM/Camera/IMG_20160510_224028.jpg
+E/MediaScannerActivity(22632): Found existing media /storage/sdcard1/DCIM/Camera/IMG_20160427_215420.jpg
+E/MediaScannerActivity(22632): Found existing media /storage/sdcard1/DCIM/Camera/VID_20160419_143144.mp4
+E/MediaScannerActivity(22632): Found existing media /storage/sdcard1/DCIM/Camera/IMG_20160427_215426.jpg
+E/MediaScannerActivity(22632): Found existing media /storage/sdcard1/DCIM/Camera/IMG_20160427_215435.jpg
+E/MediaScannerActivity(22632): Found existing media /storage/sdcard1/DCIM/Camera/IMG_20160427_215439.jpg
+E/MediaScannerActivity(22632): Found existing media /storage/sdcard1/DCIM/Camera/IMG_20160503_105904.jpg
+E/MediaScannerActivity(22632): Found existing media /storage/sdcard1/DCIM/Camera/IMG_20160503_105920.jpg
+E/MediaScannerActivity(22632): Found existing media /storage/sdcard1/DCIM/Camera/IMG_20160506_212632.jpg
+E/MediaScannerActivity(22632): Found existing media /storage/sdcard1/DCIM/Camera/IMG_20160507_143236.jpg
+E/MediaScannerActivity(22632): Found existing media /storage/sdcard1/DCIM/Camera/IMG_20160507_143239.jpg
+E/MediaScannerActivity(22632): Found existing media /storage/sdcard1/DCIM/Camera/IMG_20160507_150442.jpg
+E/MediaScannerActivity(22632): Will scan file /storage/sdcard1/DCIM/Camera/IMG_20160510_224028.jpg
+E/MediaScannerActivity(22632): Finished scanning /storage/sdcard1/DCIM/Camera/IMG_20160510_224028.jpg
