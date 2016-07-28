@@ -79,8 +79,11 @@ public final class MediaScannerActivity extends Activity
                     public void onScanCompleted(String path, Uri uri)
                     {
                         if (DEBUGGING)
+                        {
                             Log.e(TAG, "Finished scanning " + path);
-                        if (onGoing.decrementAndGet() == 0) suicide();
+                            if (onGoing.decrementAndGet() == 0) suicide();
+                        }
+                        else suicide();
                     }
                 });
     }
@@ -89,9 +92,11 @@ public final class MediaScannerActivity extends Activity
     {
         if (p.isFile())
         {
-            onGoing.incrementAndGet();
             if (DEBUGGING)
+            {
+                onGoing.incrementAndGet();
                 Log.e(TAG, "Found file " + p.getAbsolutePath());
+            }
             list.add(p.getAbsolutePath().toLowerCase());
         }
         else if (p.isDirectory())
