@@ -78,12 +78,8 @@ public final class MediaScannerActivity extends Activity
                     @Override
                     public void onScanCompleted(String path, Uri uri)
                     {
-                        if (DEBUGGING)
-                        {
-                            Log.e(TAG, "Finished scanning " + path);
-                            if (onGoing.decrementAndGet() == 0) suicide();
-                        }
-                        else suicide();
+                        if (DEBUGGING) Log.e(TAG, "Finished scanning " + path);
+                        if (onGoing.decrementAndGet() == 0) suicide();
                     }
                 });
     }
