@@ -39,6 +39,8 @@ public final class MediaScannerActivity extends Activity
     {
         super.onCreate(bundle);
 
+        Log.i(TAG, "Started");
+
         HashSet<String> list = new HashSet<>();
         for (int i = 0; i < paths.length; i++)
         {
@@ -46,6 +48,8 @@ public final class MediaScannerActivity extends Activity
                     Environment.getExternalStoragePublicDirectory(paths[i]),
                     list);
         }
+
+        Log.i(TAG, "Found " + list.size() + " media files");
 
         HashSet<String> existing = new HashSet<>();
         for (int i = 0; i < contentUris.length; i++) {
@@ -57,19 +61,40 @@ public final class MediaScannerActivity extends Activity
                                  null);
             while (cur.moveToNext()) {
                 int index = cur.getColumnIndex(MediaStore.MediaColumns.DATA);
+                String path;
+                try
+                {
+                    path = new File(cur.getString(index)).getCanonicalPath();
+                }
+                catch (Exception ex)
+                {
+                    path = cur.getString(index);
+                    Log.w(TAG,
+                          "Failed to get canonical path of " +
+                          path +
+                          ", fall back to use original path. Ex " +
+                          ex.getMessage());
+                }
                 if (DEBUGGING)
-                    Log.e(TAG, "Found existing media " + cur.getString(index));
-                existing.add(cur.getString(index).toLowerCase());
+                    Log.i(TAG, "Found existing media " + path);
+                existing.add(path);
             }
         }
+
+        Log.i(TAG, "Found " + existing.size() + " existing media files");
+
         list.removeAll(existing);
         String[] array = list.toArray(new String[0]);
-        if (array == null || array.length == 0) suicide();
+        if (array == null || array.length == 0)
+        {
+            Log.i(TAG, "No new media files found, exiting...");
+            suicide();
+        }
 
         if (DEBUGGING)
         {
             for (int i = 0; i < array.length; i++)
-                Log.e(TAG, "Will scan file " + array[i]);
+                Log.i(TAG, "Will scan file " + array[i]);
         }
 
         MediaScannerConnection.scanFile(
@@ -80,7 +105,7 @@ public final class MediaScannerActivity extends Activity
                     {
                         if (DEBUGGING)
                         {
-                            Log.e(TAG, "Finished scanning " + path);
+                            Log.i(TAG, "Finished scanning " + path);
                             if (onGoing.decrementAndGet() == 0) suicide();
                         }
                         else suicide();
@@ -92,12 +117,26 @@ public final class MediaScannerActivity extends Activity
     {
         if (p.isFile())
         {
+			String path;
+			try
+			{
+				path = p.getCanonicalPath();
+			}
+			catch (Exception ex)
+			{
+				path = p.getAbsolutePath();
+				Log.w(TAG,
+					  "Failed to get canonical path of " +
+					  path +
+					  ", fall back to use absolute path. Ex " +
+					  ex.getMessage());
+			}
             if (DEBUGGING)
             {
                 onGoing.incrementAndGet();
-                Log.e(TAG, "Found file " + p.getAbsolutePath());
+                Log.i(TAG, "Found file " + path);
             }
-            list.add(p.getAbsolutePath().toLowerCase());
+            list.add(path);
         }
         else if (p.isDirectory())
         {
