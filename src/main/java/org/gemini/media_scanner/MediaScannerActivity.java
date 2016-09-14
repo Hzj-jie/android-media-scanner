@@ -52,17 +52,17 @@ public final class MediaScannerActivity extends Activity
         Log.i(TAG, "Found " + list.size() + " media files");
 
         HashSet<String> existing = new HashSet<>();
-        for (int i = 0; i < contentUris.length; i++) {
+        for (int i = 0; i < contentUris.length; i++)
+        {
             Cursor cur = getContentResolver().query(
                                  contentUris[i],
                                  new String[] { MediaStore.MediaColumns.DATA },
                                  null,
                                  null,
                                  null);
-            if (cur == null) {
-                continue;
-            }
-            while (cur.moveToNext()) {
+            if (cur == null) continue;
+            while (cur.moveToNext())
+            {
                 int index = cur.getColumnIndex(MediaStore.MediaColumns.DATA);
                 String path;
                 try
@@ -78,8 +78,7 @@ public final class MediaScannerActivity extends Activity
                           ", fall back to use original path. Ex " +
                           ex.getMessage());
                 }
-                if (DEBUGGING)
-                    Log.i(TAG, "Found existing media " + path);
+                if (DEBUGGING) Log.i(TAG, "Found existing media " + path);
                 existing.add(path);
             }
         }
@@ -102,7 +101,8 @@ public final class MediaScannerActivity extends Activity
 
         MediaScannerConnection.scanFile(
                 this, array, null,
-                new MediaScannerConnection.OnScanCompletedListener() {
+                new MediaScannerConnection.OnScanCompletedListener()
+                {
                     @Override
                     public void onScanCompleted(String path, Uri uri)
                     {
