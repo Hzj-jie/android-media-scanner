@@ -59,6 +59,9 @@ public final class MediaScannerActivity extends Activity
                                  null,
                                  null,
                                  null);
+            if (cur == null) {
+                continue;
+            }
             while (cur.moveToNext()) {
                 int index = cur.getColumnIndex(MediaStore.MediaColumns.DATA);
                 String path;
