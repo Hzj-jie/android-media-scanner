@@ -12,10 +12,10 @@ import android.util.Log;
 
 import java.io.File;
 import java.util.HashSet;
-import java.util.concurrent.atomic.AtomicInteger;
 
 public final class MediaScannerActivity extends Activity
 {
+    private static final boolean NO_LOG = true;
     private static final boolean DEBUGGING = false;
     private static final String TAG =
             MediaScannerActivity.class.getSimpleName();
@@ -32,16 +32,14 @@ public final class MediaScannerActivity extends Activity
             MediaStore.Video.Media.EXTERNAL_CONTENT_URI
     };
 
-    private final AtomicInteger onGoing = new AtomicInteger();
-
     @Override
     protected void onCreate(Bundle bundle)
     {
         super.onCreate(bundle);
 
-        Log.i(TAG, "Started");
+        if (!NO_LOG) Log.i(TAG, "Started");
 
-        HashSet<String> list = new HashSet<>();
+        final HashSet<String> list = new HashSet<>();
         for (int i = 0; i < paths.length; i++)
         {
             scanRootFolder(
@@ -49,7 +47,7 @@ public final class MediaScannerActivity extends Activity
                     list);
         }
 
-        Log.i(TAG, "Found " + list.size() + " media files");
+        if (!NO_LOG) Log.i(TAG, "Found " + list.size() + " media files");
 
         HashSet<String> existing = new HashSet<>();
         for (int i = 0; i < contentUris.length; i++)
@@ -83,35 +81,41 @@ public final class MediaScannerActivity extends Activity
             }
         }
 
-        Log.i(TAG, "Found " + existing.size() + " existing media files");
+        if (!NO_LOG)
+            Log.i(TAG, "Found " + existing.size() + " existing media files");
 
         list.removeAll(existing);
-        String[] array = list.toArray(new String[0]);
-        if (array == null || array.length == 0)
+        if (list.isEmpty())
         {
-            Log.i(TAG, "No new media files found, exiting...");
+            if (!NO_LOG) Log.i(TAG, "No new media files found, exiting...");
             suicide();
         }
 
         if (DEBUGGING)
         {
-            for (int i = 0; i < array.length; i++)
-                Log.i(TAG, "Will scan file " + array[i]);
+            for (String file : list)
+                Log.i(TAG, "Will scan file " + file);
         }
+        if (!NO_LOG) Log.i(TAG, "Will scan " + list.size() + " files");
 
         MediaScannerConnection.scanFile(
-                this, array, null,
+                this, list.toArray(new String[0]), null,
                 new MediaScannerConnection.OnScanCompletedListener()
                 {
                     @Override
                     public void onScanCompleted(String path, Uri uri)
                     {
                         if (DEBUGGING)
-                        {
                             Log.i(TAG, "Finished scanning " + path);
-                            if (onGoing.decrementAndGet() == 0) suicide();
+                        synchronized (list)
+                        {
+                            list.remove(path);
+                            if (list.isEmpty())
+                            {
+                                if (!NO_LOG) Log.i(TAG, "Done, exiting...");
+                                suicide();
+                            }
                         }
-                        else suicide();
                     }
                 });
     }
@@ -134,11 +138,7 @@ public final class MediaScannerActivity extends Activity
 					  ", fall back to use absolute path. Ex " +
 					  ex.getMessage());
 			}
-            if (DEBUGGING)
-            {
-                onGoing.incrementAndGet();
-                Log.i(TAG, "Found file " + path);
-            }
+            if (DEBUGGING) Log.i(TAG, "Found file " + path);
             list.add(path);
         }
         else if (p.isDirectory())
