@@ -32,6 +32,35 @@ public final class MediaScannerActivity extends Activity
             MediaStore.Video.Media.EXTERNAL_CONTENT_URI
     };
 
+    private static void scanRootFolder(File p, HashSet<String> list)
+    {
+        if (p.isFile())
+        {
+            String path;
+            try
+            {
+                path = p.getCanonicalPath();
+            }
+            catch (Exception ex)
+            {
+                path = p.getAbsolutePath();
+                Log.w(TAG,
+                      "Failed to get canonical path of " +
+                      path +
+                      ", fall back to use absolute path. Ex " +
+                      ex.getMessage());
+            }
+            if (DEBUGGING) Log.i(TAG, "Found file " + path);
+            list.add(path);
+        }
+        else if (p.isDirectory())
+        {
+            File[] files = p.listFiles();
+            if (files != null && files.length > 0)
+                for (File s : files) scanRootFolder(s, list);
+        }
+    }
+
     @Override
     protected void onCreate(Bundle bundle)
     {
@@ -118,35 +147,6 @@ public final class MediaScannerActivity extends Activity
                         }
                     }
                 });
-    }
-
-    private void scanRootFolder(File p, HashSet<String> list)
-    {
-        if (p.isFile())
-        {
-			String path;
-			try
-			{
-				path = p.getCanonicalPath();
-			}
-			catch (Exception ex)
-			{
-				path = p.getAbsolutePath();
-				Log.w(TAG,
-					  "Failed to get canonical path of " +
-					  path +
-					  ", fall back to use absolute path. Ex " +
-					  ex.getMessage());
-			}
-            if (DEBUGGING) Log.i(TAG, "Found file " + path);
-            list.add(path);
-        }
-        else if (p.isDirectory())
-        {
-            File[] files = p.listFiles();
-            if (files != null && files.length > 0)
-                for (File s : files) scanRootFolder(s, list);
-        }
     }
 
     private void suicide()
