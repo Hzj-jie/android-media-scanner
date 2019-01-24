@@ -11,6 +11,7 @@ import android.provider.MediaStore;
 import android.util.Log;
 import java.io.File;
 import java.util.HashSet;
+import org.gemini.shared.Storage;
 
 public final class MediaScannerActivity extends Activity {
   private static final boolean NO_LOG = true;
@@ -24,11 +25,14 @@ public final class MediaScannerActivity extends Activity {
       Environment.DIRECTORY_MUSIC,
       Environment.DIRECTORY_PICTURES
   };
+
   private static final Uri contentUris[] = {
       MediaStore.Audio.Media.EXTERNAL_CONTENT_URI,
       MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
       MediaStore.Video.Media.EXTERNAL_CONTENT_URI
   };
+
+  private final Storage storage = new Storage(this);
 
   private static void logI(String s) {
     if (!NO_LOG) {
@@ -80,6 +84,14 @@ public final class MediaScannerActivity extends Activity {
       scanRootFolder(
           Environment.getExternalStoragePublicDirectory(paths[i]),
           list);
+
+      scanRootFolder(
+          new File(storage.buildInSharedStoragePath(), paths[i]),
+          list);
+
+      scanRootFolder(
+          new File(storage.externalSharedStoragePath(), paths[i]),
+          list);
     }
 
     logI("Found " + list.size() + " media files");
@@ -111,6 +123,8 @@ public final class MediaScannerActivity extends Activity {
         if (file != null && file.exists() && file.isFile()) {
           logD("Found existing media " + path);
           existing.add(path);
+        } else {
+          logI("Media file " + path + " does not exist, will rescan it.");
         }
       }
     }
