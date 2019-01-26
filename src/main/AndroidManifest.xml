@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="org.gemini.media_scanner"
-    android:versionCode="6"
+    android:versionCode="7"
     android:versionName="1.0">
 
     <uses-sdk android:minSdkVersion="8"
@@ -22,5 +22,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <service android:name=".MediaScannerService"
+                 android:label="Media Scanner Service" />
     </application>
 </manifest>
