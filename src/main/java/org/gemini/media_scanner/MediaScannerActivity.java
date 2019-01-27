@@ -1,14 +1,17 @@
 package org.gemini.media_scanner;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
-import android.os.Bundle;
+import android.Manifest.permission;
+import org.gemini.shared.PermissionRequestActivity;
 
-public final class MediaScannerActivity extends Activity {
+public final class MediaScannerActivity extends PermissionRequestActivity {
+  public MediaScannerActivity() {
+    super(permission.READ_EXTERNAL_STORAGE);
+  }
+
   @Override
-  protected void onCreate(Bundle bundle) {
-    super.onCreate(bundle);
+  protected void onPermissionGranted() {
     startService(new Intent(Intent.ACTION_BOOT_COMPLETED,
                             Uri.EMPTY,
                             this,
