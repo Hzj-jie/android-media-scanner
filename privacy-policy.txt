@@ -1,0 +1,3 @@
+This application requires READ_EXTERNAL_STORAGE permission for its designed
+functionality, scan all the media files and add them into android media system.
+This application does not collect, store or send any data for any purpose.
